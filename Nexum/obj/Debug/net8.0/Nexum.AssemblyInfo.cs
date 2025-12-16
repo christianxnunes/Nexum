@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Nexum")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3836930a79a312e2adf17d104c3a59e2a968a48c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Nexum")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Nexum")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

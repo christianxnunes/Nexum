@@ -33,3 +33,4 @@ D:\christianEstudo\repos\Nexum\Nexum\obj\Debug\net8.0\refint\Nexum.dll
 D:\christianEstudo\repos\Nexum\Nexum\obj\Debug\net8.0\Nexum.pdb
 D:\christianEstudo\repos\Nexum\Nexum\obj\Debug\net8.0\Nexum.genruntimeconfig.cache
 D:\christianEstudo\repos\Nexum\Nexum\obj\Debug\net8.0\ref\Nexum.dll
+D:\christianEstudo\repos\Nexum\Nexum\obj\Debug\net8.0\Nexum.sourcelink.json
