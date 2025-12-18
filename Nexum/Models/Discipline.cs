@@ -2,7 +2,7 @@
 {
     public class Discipline
     {
-        public Discipline(Guid id, string name, int teacherId)
+        public Discipline(Guid id, string name, Guid teacherId)
         {
             Id = id;
             Name = name;
@@ -10,9 +10,13 @@
         }
 
         public Guid Id { get; set; }
+
         public string Name { get; set; }
-        public int TeacherId { get; set; }
+
+        public Guid TeacherId { get; set; }
+
         public Teacher Teacher { get; set; }
+
         public IEnumerable<StudentDiscipline> StudentsDisciplines { get; set; }
     }
 }
