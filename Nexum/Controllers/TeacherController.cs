@@ -11,12 +11,15 @@ namespace Nexum.Controllers
     public class TeacherController : ControllerBase
     {
         private readonly NexumContext _nexumContext;
+        private readonly IRepository _repository;
 
         public TeacherController(
-            NexumContext nexumContext
+            NexumContext nexumContext,
+            IRepository repository
          )
         {
             _nexumContext = nexumContext;
+            _repository = repository;
         }
 
         [HttpGet]
@@ -47,9 +50,11 @@ namespace Nexum.Controllers
         {
             var existing = _nexumContext.Teachers.AsNoTracking().FirstOrDefault(t => t.Name == teacher.Name);
             if (existing != null) return NotFound("Professor já existe!");
-            _nexumContext.Add(teacher);
-            _nexumContext.SaveChanges();
-            return Ok(teacher);
+
+            _repository.Add(teacher);
+            if (_repository.SaveChanges()) return Ok(teacher);
+
+            return BadRequest("Não foi possivel salvar o professor!");
         }
 
         [HttpPut("{id}")]

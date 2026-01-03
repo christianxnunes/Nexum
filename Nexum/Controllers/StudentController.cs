@@ -11,42 +11,27 @@ namespace Nexum.Controllers
     public class StudentController : ControllerBase
     {
         private readonly NexumContext _nexumContext;
+        private readonly IRepository _repository;
 
         public StudentController(
-            NexumContext nexumContext
+            NexumContext nexumContext,
+            IRepository repository
          )
         {
             _nexumContext = nexumContext;
+            _repository = repository;
         }
-
 
         [HttpGet]
         public IActionResult GetStudents()
         {
-            if (_nexumContext.Students == null || !_nexumContext.Students.Any()) return NotFound("Nenhum aluno foi encontrado!");
-            return Ok(_nexumContext.Students);
+            return Ok(_repository.GetStudents());
         }
 
         [HttpGet("{id:guid}")]
         public IActionResult GetStudentById(Guid id)
         {
-            var student = _nexumContext.Students.FirstOrDefault(s => s.Id == id);
-            if (student == null) return NotFound("Aluno não foi encontrado!");
-            return Ok(student);
-        }
-
-        [HttpGet("{name}")]
-        public IActionResult GetStudentByName(string name)
-        {
-            var student = _nexumContext.Students.FirstOrDefault(s => s.Name == name);
-            if (student == null) return NotFound("Aluno não foi encontrado!");
-            return Ok(student);
-        }
-
-        [HttpGet("list")]
-        public IActionResult GetStudentByLastName(string lastName)
-        {
-            var student = _nexumContext.Students.FirstOrDefault(s => s.LastName == lastName);
+            var student = _repository.GetStudentByDependenciId(id);
             if (student == null) return NotFound("Aluno não foi encontrado!");
             return Ok(student);
         }
@@ -56,9 +41,10 @@ namespace Nexum.Controllers
         {
             var existing = _nexumContext.Students.AsNoTracking().FirstOrDefault(s => s.Name == student.Name && s.LastName == student.LastName);
             if (existing != null) return NotFound("Aluno já existe!");
-            _nexumContext.Add(student);
-            _nexumContext.SaveChanges();
-            return Ok(student);
+            _repository.Add(student);
+            if(_repository.SaveChanges()) return Ok(student);
+            
+            return BadRequest("Não foi possivel salvar aluno!");
         }
 
         [HttpPut("{id}")]

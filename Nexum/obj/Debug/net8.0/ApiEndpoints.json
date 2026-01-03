@@ -100,38 +100,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Nexum.Controllers.StudentController",
-    "Method": "GetStudentByName",
-    "RelativePath": "api/Student/{name}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "name",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Nexum.Controllers.StudentController",
-    "Method": "GetStudentByLastName",
-    "RelativePath": "api/Student/list",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "lastName",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "Nexum.Controllers.TeacherController",
     "Method": "GetTeacher",
     "RelativePath": "api/Teacher",

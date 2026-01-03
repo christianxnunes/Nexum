@@ -170,49 +170,6 @@
         }
       }
     },
-    "/api/Student/{name}": {
-      "get": {
-        "tags": [
-          "Student"
-        ],
-        "parameters": [
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Student/list": {
-      "get": {
-        "tags": [
-          "Student"
-        ],
-        "parameters": [
-          {
-            "name": "lastName",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/Teacher": {
       "get": {
         "tags": [
