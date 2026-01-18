@@ -1,25 +1,23 @@
 ﻿namespace Nexum.Models
 {
-    public class StudentDiscipline
+    public class StudentCourse
     {
-        public StudentDiscipline(Guid studentId, Guid disciplineId)
+        public StudentCourse(Guid studentId, Guid courseId)
         {
             this.StudentId = studentId;
-            this.DisciplineId = disciplineId;
+            this.CourseId = courseId;
         }
 
         public DateTime StartDate { get; set; } = DateTime.Now;
 
         public DateTime EndDate { get; set; }
 
-        public double? Grade { get; set; } = null;
-
         public Guid StudentId { get; set; }
 
         public Student Student { get; set; }
 
-        public Guid DisciplineId { get; set; }
+        public Guid CourseId { get; set; }
 
-        public Discipline Disciplines { get; set; }
+        public Course Courses { get; set; }
     }
 }

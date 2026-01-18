@@ -10,28 +10,26 @@ namespace Nexum.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly NexumContext _nexumContext;
         private readonly IRepository _repository;
 
         public StudentController(
-            NexumContext nexumContext,
             IRepository repository
          )
         {
-            _nexumContext = nexumContext;
             _repository = repository;
         }
 
         [HttpGet]
         public IActionResult GetStudents()
         {
-            return Ok(_repository.GetStudents());
+            var res = _repository.GetStudents(true);
+            return Ok(res);
         }
 
         [HttpGet("{id:guid}")]
         public IActionResult GetStudentById(Guid id)
         {
-            var student = _repository.GetStudentByDependenciId(id);
+            var student = _repository.GetStudentById(id, false);
             if (student == null) return NotFound("Aluno não foi encontrado!");
             return Ok(student);
         }
@@ -39,42 +37,46 @@ namespace Nexum.Controllers
         [HttpPost]
         public IActionResult PostStudent(Student student)
         {
-            var existing = _nexumContext.Students.AsNoTracking().FirstOrDefault(s => s.Name == student.Name && s.LastName == student.LastName);
-            if (existing != null) return NotFound("Aluno já existe!");
             _repository.Add(student);
-            if(_repository.SaveChanges()) return Ok(student);
+            if (_repository.SaveChanges()) return Ok(student);
             
             return BadRequest("Não foi possivel salvar aluno!");
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         public IActionResult PutStudent(Guid id, Student student)
         {
-            var existing = _nexumContext.Students.AsNoTracking().FirstOrDefault(s => s.Id == id);
+            var existing = _repository.GetStudentById(id, false);
             if (existing == null) return NotFound("Aluno não foi encontrado!");
-            _nexumContext.Update(student);
-            _nexumContext.SaveChanges();
-            return Ok(student);
+            
+            _repository.Update(student);
+            if (_repository.SaveChanges()) return Ok(student);
+
+            return BadRequest("Não foi possivel editar aluno!");
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{id:guid}")]
         public IActionResult PatchStudent(Guid id, Student student)
         {
-            var existing = _nexumContext.Students.AsNoTracking().FirstOrDefault(s => s.Id == id);
+            var existing = _repository.GetStudentById(id, false);
             if (existing == null) return NotFound("Aluno não foi encontrado!");
-            _nexumContext.Update(student);
-            _nexumContext.SaveChanges();
-            return Ok(student);
+
+            _repository.Update(student);
+            if (_repository.SaveChanges()) return Ok(student);
+
+            return BadRequest("Não foi possivel editar aluno!");
         }
 
         [HttpDelete("{id}")]
         public IActionResult DelStudentById(Guid id)
         {
-            var student = _nexumContext.Students.FirstOrDefault(s => s.Id == id);
+            var student = _repository.GetStudentById(id, false);
             if (student == null) return NotFound("Aluno não foi encontrado!");
-            _nexumContext.Remove(student);
-            _nexumContext.SaveChanges();
-            return Ok();
+
+            _repository.Delete(student);
+            if (_repository.SaveChanges()) return Ok();
+
+            return BadRequest("Não foi possivel deletar o aluno!");
         }
     }
 }

@@ -10,81 +10,72 @@ namespace Nexum.Controllers
     [ApiController]
     public class TeacherController : ControllerBase
     {
-        private readonly NexumContext _nexumContext;
         private readonly IRepository _repository;
 
         public TeacherController(
-            NexumContext nexumContext,
             IRepository repository
          )
         {
-            _nexumContext = nexumContext;
             _repository = repository;
         }
 
         [HttpGet]
         public IActionResult GetTeacher()
         {
-            if (_nexumContext.Teachers == null || !_nexumContext.Teachers.Any()) return NotFound("Nenhum professor foi encontrado!");
-            return Ok(_nexumContext.Teachers);
+            var res = _repository.GetTeacher(true);
+            return Ok(res);
         }
 
         [HttpGet("{id:guid}")]
         public IActionResult GetTeacherById(Guid id)
         {
-            var student = _nexumContext.Teachers.FirstOrDefault(s => s.Id == id);
-            if (student == null) return NotFound("Professor não foi encontrado!");
-            return Ok(student);
-        }
-
-        [HttpGet("{name}")]
-        public IActionResult GetTeacherByName(string name)
-        {
-            var student = _nexumContext.Teachers.FirstOrDefault(s => s.Name == name);
-            if (student == null) return NotFound("Professor não foi encontrado!");
-            return Ok(student);
+            var teacher = _repository.GetTeacherById(id, false);
+            if (teacher == null) return NotFound("Professor não foi encontrado!");
+            return Ok(teacher);
         }
 
         [HttpPost]
         public IActionResult PostTeacher(Teacher teacher)
         {
-            var existing = _nexumContext.Teachers.AsNoTracking().FirstOrDefault(t => t.Name == teacher.Name);
-            if (existing != null) return NotFound("Professor já existe!");
-
             _repository.Add(teacher);
             if (_repository.SaveChanges()) return Ok(teacher);
 
             return BadRequest("Não foi possivel salvar o professor!");
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         public IActionResult PutTeacher(Guid id, Teacher teacher)
         {
-            var existing = _nexumContext.Teachers.AsNoTracking().FirstOrDefault(s => s.Id == id);
+            var existing = _repository.GetTeacherById(id, false);
             if (existing == null) return NotFound("Professor não foi encontrado!");
-            _nexumContext.Update(teacher);
-            _nexumContext.SaveChanges();
-            return Ok(teacher);
+            
+            _repository.Update(teacher);
+            if(_repository.SaveChanges()) return Ok(teacher);
+
+            return BadRequest("Não foi possivel editar o professor!");
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{id:guid}")]
         public IActionResult PatchTeacher(Guid id, Teacher teacher)
         {
-            var existing = _nexumContext.Teachers.AsNoTracking().FirstOrDefault(s => s.Id == id);
+            var existing = _repository.GetTeacherById(id, false);
             if (existing == null) return NotFound("Professor não foi encontrado!");
-            _nexumContext.Update(teacher);
-            _nexumContext.SaveChanges();
-            return Ok(teacher);
+
+            _repository.Update(teacher);
+            if (_repository.SaveChanges()) return Ok(teacher);
+
+            return BadRequest("Não foi possivel editar o professor!");
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public IActionResult DelTeacherById(Guid id)
         {
-            var teacher = _nexumContext.Teachers.FirstOrDefault(s => s.Id == id);
+            var teacher = _repository.GetTeacherById(id, false);
             if (teacher == null) return NotFound("Professor não foi encontrado!");
-            _nexumContext.Remove(teacher);
-            _nexumContext.SaveChanges();
-            return Ok();
+            _repository.Delete(teacher);
+            if (_repository.SaveChanges()) return Ok();
+
+            return BadRequest("Não foi possivel deletar o professor!");
         }
     }
 }

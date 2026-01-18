@@ -14,14 +14,18 @@ namespace Nexum.Data
 
         //Students
 
-        Student[] GetStudents(bool isDiscipline = false);
+        Student[] GetStudents(bool isTeacher = false);
 
-        Student GetStudentById(Guid id, bool isDiscipline = false);
+        Student GetStudentById(Guid id, bool isTeacher = false);
         
-        Student[] GetStudentByDependenciId(Guid id, bool isDiscipline = false);
+        Student[] GetStudentByDependenciId(Guid id, bool isTeacher = false);
 
 
         //Teacher
+        Teacher[] GetTeacher(bool isStudent = false);
+
+        Teacher GetTeacherById(Guid id, bool isStudent = false);
+
         Teacher[] GetTeacherByDependenciId(Guid id, bool isStudent = false);
     }
 }

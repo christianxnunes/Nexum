@@ -198,21 +198,5 @@
       }
     ],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Nexum.Controllers.TeacherController",
-    "Method": "GetTeacherByName",
-    "RelativePath": "api/Teacher/{name}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "name",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
   }
 ]

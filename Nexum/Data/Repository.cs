@@ -35,11 +35,11 @@ namespace Nexum.Data
         }
 
         //Students
-        public Student[] GetStudents(bool isDiscipline = false)
+        public Student[] GetStudents(bool isTeacher = false)
         {
             IQueryable<Student> query = _nexumContext.Students;
 
-            if(isDiscipline)
+            if(isTeacher)
             {
                 query = query.Include(s => s.StudentsDisciplines)
                     .ThenInclude(sd => sd.Discipline)
@@ -51,11 +51,11 @@ namespace Nexum.Data
             return query.ToArray();
         }
 
-        public Student GetStudentById(Guid id, bool isDiscipline)
+        public Student GetStudentById(Guid id, bool isTeacher)
         {
             IQueryable<Student> query = _nexumContext.Students;
 
-            if (isDiscipline)
+            if (isTeacher)
             {
                 query = query.Include(s => s.StudentsDisciplines)
                     .ThenInclude(sd => sd.Discipline)
@@ -67,13 +67,48 @@ namespace Nexum.Data
             return query.FirstOrDefault();
         }
 
+        //Teacher
+
+        public Teacher[] GetTeacher(bool isStudent = false)
+        {
+            IQueryable<Teacher> query = _nexumContext.Teachers;
+
+            if (isStudent)
+            {
+                query = query.Include(t => t.Disciplines)
+                    .ThenInclude(d => d.StudentsDisciplines)
+                    .ThenInclude(sd => sd.Student);
+            }
+
+            query = query.AsNoTracking().OrderBy(t => t.Id);
+
+            return query.ToArray();
+        }
+
+        public Teacher GetTeacherById(Guid id, bool isStudent)
+        {
+            IQueryable<Teacher> query = _nexumContext.Teachers;
+
+            if (isStudent)
+            {
+                query = query.Include(t => t.Disciplines)
+                    .ThenInclude(d => d.StudentsDisciplines)
+                    .ThenInclude(sd => sd.Student);
+            }
+
+            query = query.AsNoTracking().OrderBy(s => s.Id).Where(t => t.Id == id);
+
+            return query.FirstOrDefault();
+        }
+
+
         //StudentDependenci
 
-        public Student[] GetStudentByDependenciId(Guid id, bool isDiscipline = false)
+        public Student[] GetStudentByDependenciId(Guid id, bool isTeacher = false)
         {
             IQueryable<Student> query = _nexumContext.Students;
 
-            if (isDiscipline)
+            if (isTeacher)
             {
                 query = query.Include(s => s.StudentsDisciplines)
                     .ThenInclude(sd => sd.Discipline)
